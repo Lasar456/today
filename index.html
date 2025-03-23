@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Header with Left-Sided Sliding Menu</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      /* Global Styles */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+        background: #fff;
+      }
+
+      /* Header Styling */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 60px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+      }
+
+      /* Left Section */
+      .left-section {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+      }
+
+      /* Logo */
+      .logo img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      /* Contact Info */
+      .contact-info {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .contact-info a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        font-size: 16px;
+        transition: color 0.3s;
+      }
+
+      .contact-info i {
+        margin-right: 8px;
+        font-size: 18px;
+        color: #555;
+      }
+
+      .contact-info a:hover {
+        color: #007bff;
+      }
+
+      /* Navigation Menu */
+      .nav-menu a {
+        text-decoration: none;
+        color: #333;
+        margin: 0 20px;
+        font-size: 18px;
+        transition: color 0.3s;
+      }
+
+      .nav-menu a:hover {
+        color: #007bff;
+      }
+
+      /* Right Section */
+      .right-section {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      /* Social Icons */
+      .social-info {
+        display: flex;
+        gap: 10px;
+      }
+
+      .social-info a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #555;
+        font-size: 18px;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .social-info a:hover {
+        color: #007bff;
+      }
+
+      /* Book Now Button */
+      .book-btn button {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 25px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+        border-radius: 5px;
+      }
+
+      .book-btn button:hover {
+        background: #0056b3;
+      }
+
+      /* Hamburger Menu Icon */
+      .hamburger {
+        display: block;
+      }
+
+      .hamburger a {
+        font-size: 24px;
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s;
+        cursor: pointer;
+      }
+
+      .hamburger a:hover {
+        color: #007bff;
+      }
+
+      /* Sliding Menu (From Left) */
+      .slide-menu {
+        position: fixed;
+        top: 0;
+        left: -300px; /* Hidden by default */
+        width: 300px;
+        height: 100vh;
+        background: #0066cc; /* Darker blue for contrast */
+        color: #fff;
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        transition: left 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        padding: 40px 14px; /* Better padding */
+      }
+
+      .slide-menu.open {
+        left: 0; /* Slide in from left */
+      }
+
+      .slide-menu .close-btn {
+        font-size: 26px;
+        text-align: right;
+        cursor: pointer;
+        margin-bottom: 30px;
+      }
+
+      .slide-menu a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        margin: 15px 0;
+        transition: color 0.3s;
+      }
+
+      .slide-menu a:hover {
+        color: #f4f4f4;
+      }
+
+      /* Separator Line */
+      .slide-menu hr {
+        border: 0;
+        height: 1px;
+        background: #fff;
+        margin: 20px 0;
+        opacity: 0.5;
+      }
+
+      /* Contact Info Styling */
+      .slide-menu a i {
+        margin-right: 10px;
+        font-size: 20px;
+      }
+
+      /* Social Icons Section */
+      .slide-menu .social-info {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: -15px 0;
+      }
+
+      .slide-menu .social-info a {
+        color: #fff;
+        font-size: 22px;
+        transition: color 0.3s;
+      }
+
+      .slide-menu .social-info a:hover {
+        color: #f4f4f4;
+      }
+
+      /* Book Now Button Styling */
+      .slide-menu .book-btn {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .slide-menu .book-btn button {
+        background: #fff;
+        color: #007bff;
+        border: 1px solid #fff;
+        padding: 12px 30px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        white-space: nowrap;
+      }
+
+      .slide-menu .book-btn button:hover {
+        background: #f4f4f4;
+        color: #0056b3;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 1060px) {
+        .header {
+          padding: 15px 30px;
+        }
+
+        .middle-section,
+        .contact-info {
+          display: none;
+        }
+
+        .right-section {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+        }
+
+        .right-section .social-info,
+        .right-section .book-btn {
+          display: none;
+        }
+
+        .hamburger {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="left-section">
+        <div class="logo">
+          <img src="./vedam.png" alt="logo" />
+        </div>
+        <div class="contact-info">
+          <a href="mailto:info@coastalvedam.com">
+            <i class="fas fa-envelope"></i><span>info@coastalvedam.com</span>
+          </a>
+          <a href="tel:9589044093">
+            <i class="fas fa-phone"></i><span>9589044093</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="middle-section">
+        <nav class="nav-menu">
+          <a href="#">Home</a>
+          <a href="#">About</a>
+          <a href="#">Service</a>
+          <a href="#">Contact</a>
+        </nav>
+      </div>
+
+      <div class="right-section">
+        <div class="social-info">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+        <div class="book-btn"><button>Book Now</button></div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <a href="#"><i class="fas fa-bars"></i></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="slide-menu" id="slideMenu">
+      <div class="close-btn" onclick="toggleMenu()">✖</div>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Service</a>
+      <a href="#">Contact</a>
+      <hr />
+      <a href="mailto:info@coastalvedam.com"
+        ><i class="fas fa-envelope"></i> info@coastalvedam.com</a
+      >
+      <a href="tel:9589044093"><i class="fas fa-phone"></i> 9589044093</a>
+      <div class="social-info">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <div class="book-btn"><button>Book Now</button></div>
+      </div>
+    </div>
+
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("slideMenu");
+        menu.classList.toggle("open");
+      }
+    </script>
+  </body>
+</html>
